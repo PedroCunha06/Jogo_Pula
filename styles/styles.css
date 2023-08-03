@@ -1,0 +1,79 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.fundo {
+  width: 80%;
+  height: 600px;
+  border-bottom: 15px solid gray;
+  border-image: url(../images/rua.jpeg) 10% round;
+  margin: 0 auto;
+
+  position: relative;
+  overflow: hidden;
+}
+
+.tubo_1 {
+  width: 100px;
+  bottom: 0;
+
+
+  background: url(../images/fire-border.jpeg);
+
+  display: block;
+  position: absolute;
+  animation: tubo-animation 1.3s infinite linear;
+}
+
+@media only screen and (max-width: 800px) {
+  .tubo_1 {
+    animation: tubo-animation 1s infinite linear;
+  }
+}
+
+.person {
+  width: 90px;
+  bottom: 0px;
+  left: 50px;
+
+  display: block;
+  position: absolute;
+}
+
+.jump {
+  animation: jump 550ms ease-out;
+}
+
+@keyframes tubo-animation {
+  from {
+    right: -150px;
+  }
+
+  to {
+    right: 100%;
+  }
+}
+
+@keyframes jump {
+  0% {
+    bottom: 0;
+  }
+
+  40% {
+    bottom: 150px;
+  }
+
+  50% {
+    bottom: 150px;
+  }
+
+  60% {
+    bottom: 150px;
+  }
+
+  to {
+    bottom: 0;
+  }
+}
