@@ -1,34 +1,48 @@
-const tom = document.querySelector('.person');
-const bomba = document.querySelector('.tubo_1');
+const personagem = document.querySelector('.person');
+const obstaculo = document.querySelector('.tubo_1');
+const show_pontos = document.querySelector('#pontos');
+let player_pontos = 0;
+let inicio = null;
+let loop = null;
 
-const jump = () => {
-    tom.classList.add('jump');
-
-    setTimeout(() => {
-        tom.classList.remove('jump');
-    }, 600);
+let pontos = () => {
+    player_pontos++;
+    show_pontos.innerHTML = `Score: <b>${player_pontos}</b>`;
 }
 
-const loop = setInterval(() => {
+window.addEventListener("keydown", (start) => {
+    if (start.code === "Space" && inicio === null) {
+        obstaculo.style.display = 'block';
+        obstaculo.style.animation = 'tubo-animation 1.3s infinite linear';
 
-    const tuboPosition = bomba.offsetLeft;
-    const tomPosition = window.getComputedStyle(tom).bottom.replace('px', '');
-
-    console.log(tuboPosition);
-
-    if ((tuboPosition <= 115  && tuboPosition > -40) && tomPosition < 100) {
-
-        bomba.style.animation = 'none';
-        bomba.style.left = `${tuboPosition}px`;
-
-        tom.style.animation = 'none';
-        tom.style.bottom = `${tomPosition}px`;
-
-
-        clearInterval(loop);
+        inicio = setInterval(pontos, 400);
+        loop = setInterval(verificarColisao, 10); 
     }
+});
 
-}, 10)
+document.addEventListener('keydown', (e) => {
+    if (e.key === "ArrowUp" || e.code === "Space") {
+        personagem.classList.add('jump');
 
-document.addEventListener('keydown', jump);
+        setTimeout(() => {
+            personagem.classList.remove('jump');
+        }, 600);
+    }
+});
 
+function verificarColisao() {
+    const tuboPosition = parseInt(getComputedStyle(obstaculo).getPropertyValue("left"));
+    const personagemPosition = parseInt(getComputedStyle(personagem).getPropertyValue("bottom"));
+
+    if ((tuboPosition <= 115 && tuboPosition > -40) && personagemPosition < 100) {
+        obstaculo.style.animation = 'none';
+        obstaculo.style.left = `${tuboPosition}px`;
+
+        personagem.style.animation = 'none';
+        personagem.style.bottom = `${personagemPosition}px`;
+
+        clearInterval(inicio);
+        clearInterval(loop); 
+        inicio = null;
+    }
+}

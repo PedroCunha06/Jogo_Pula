@@ -4,11 +4,17 @@
   box-sizing: border-box;
 }
 
+body {
+  background-color: black;
+}
+
 .fundo {
   width: 80%;
   height: 600px;
-  border-bottom: 15px solid gray;
-  border-image: url(../images/rua.jpeg) 10% round;
+  background-image: url(../images/fundo-cidade.jpg);
+  background-size: cover;
+  border-bottom: 15px solid rgb(255, 255, 255);
+  border-image: url(../images/rua.jpeg) 15% round;
   margin: 0 auto;
 
   position: relative;
@@ -20,11 +26,12 @@
   bottom: 0;
 
 
+
   background: url(../images/fire-border.jpeg);
 
-  display: block;
+  display: none;
   position: absolute;
-  animation: tubo-animation 1.3s infinite linear;
+  animation: none;
 }
 
 @media only screen and (max-width: 800px) {
