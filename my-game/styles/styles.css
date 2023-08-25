@@ -9,8 +9,8 @@ body {
 }
 
 .fundo {
-  width: 80%;
-  height: 600px;
+  width: 80vw;
+  height: 85vh;
   background-image: url(../images/fundo-cidade.jpg);
   background-size: cover;
   border-bottom: 15px solid rgb(255, 255, 255);

@@ -16,7 +16,7 @@ window.addEventListener("keydown", (start) => {
         obstaculo.style.animation = 'tubo-animation 1.3s infinite linear';
 
         inicio = setInterval(pontos, 400);
-        loop = setInterval(verificarColisao, 10); 
+        loop = setInterval(verificarColisao, 10);
     }
 });
 
@@ -42,7 +42,16 @@ function verificarColisao() {
         personagem.style.bottom = `${personagemPosition}px`;
 
         clearInterval(inicio);
-        clearInterval(loop); 
+        clearInterval(loop);
         inicio = null;
+
+        let botaoRestart;
+        const reset = document.querySelector('#restart')
+        botaoRestart = document.createElement('button');
+        botaoRestart.textContent = 'Iniciar novo jogo';
+        botaoRestart.style.fontSize = '20px';
+        reset.appendChild(botaoRestart);
+
+        botaoRestart.addEventListener('click', restartGame);
     }
 }
