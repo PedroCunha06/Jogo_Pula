@@ -1,11 +1,14 @@
 import { updateGround, setupGround } from './ground.js'
+import { updateDino, setupDino, setDinoLose, getDinoRect } from './dino.js'
+import { updateCacto, setupCacto, getCactusRects } from './cactos.js'
 
 const WORLD_WIDTH = 100;
 const WORLD_HEIGHT = 30;
 const SPEED_SCALE_INCREASE = 0.0001;
 
-const worldElem = document.querySelector('[data-world');
-const scoreElem = document.querySelector('.score');
+const worldElem = document.querySelector('[data-world]');
+const scoreElem = document.querySelector('[data-score]');
+const startScreenElem = document.querySelector('[data-start-screen]');
 
 setPixelToWorldScale()
 window.addEventListener('resize', setPixelToWorldScale);
@@ -25,22 +28,38 @@ function update(time) {
     const delta = time - lastTime;
 
     updateGround(delta, speedScale);
+    updateDino(delta, speedScale);
     updateSpeedScale(delta);
+    updateCacto(delta, speedScale);
     updateScore(delta);
+    if(checkLose()) return handleStart();
 
     lastTime = time;
     window.requestAnimationFrame(update);
 }
 
+function checkLose() {
+    const dinoRect = getDinoRect();
+    return getCactusRects().some(rect => isCollision(rect, dinoRect))
+}
+
+function isCollision(rect1, rect2) {
+    return
+        rect1.left < rect2.right &&
+        rect1.top < rect2.bottom &&
+        rect1.right > rect2.left &&
+        rect1.bottom > rect2.top
+}
+
 // Essa funcao aumenta a velocidade da tela
 function updateSpeedScale(delta) {
-    speedScale +=  delta * SPEED_SCALE_INCREASE
+    speedScale += delta * SPEED_SCALE_INCREASE
 }
 
 // Essa funcao atualiza o score
 function updateScore(delta) {
-    score += delta * 0.01;
-    scoreElem.textContext = Math.floor(score);
+    score += delta * 0.01
+    scoreElem.textContent = Math.floor(score)
 }
 
 // Essa funcao comeca o jogo
@@ -48,8 +67,20 @@ function handleStart() {
     lastTime = null;
     speedScale = 1;
     setupGround();
+    setupDino();
+    setupCacto();
+    // Apaga texto de inicio do game
+    startScreenElem.classList.add("hide");
     // Fala para o navegador que deseja fazer uma animacao e que o navegador deve fazer chamar uma funcao especifica para atualizar, antes da repaint. Usa callback.
     window.requestAnimationFrame(update);
+}
+
+function handleLose() {
+    setDinoLose();
+    setTimeout(() => {
+        document.addEventListener("keydown", handleStart, {once: true})
+        startScreenElem.classList.remove("hide");
+    }, 100);
 }
 
 function setPixelToWorldScale() {
