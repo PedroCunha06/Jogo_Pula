@@ -32,20 +32,21 @@ function update(time) {
     updateSpeedScale(delta);
     updateCacto(delta, speedScale);
     updateScore(delta);
-    if(checkLose()) return handleStart();
+    if (checkLose()) return handleLose();
 
     lastTime = time;
     window.requestAnimationFrame(update);
 }
 
+// Essa funcao checa se houve ou nao derrota
 function checkLose() {
     const dinoRect = getDinoRect();
     return getCactusRects().some(rect => isCollision(rect, dinoRect))
 }
 
+// Funcao compara valores para checar se houve colisoes
 function isCollision(rect1, rect2) {
-    return
-        rect1.left < rect2.right &&
+    return rect1.left < rect2.right &&
         rect1.top < rect2.bottom &&
         rect1.right > rect2.left &&
         rect1.bottom > rect2.top
@@ -64,6 +65,7 @@ function updateScore(delta) {
 
 // Essa funcao comeca o jogo
 function handleStart() {
+    score = 0;
     lastTime = null;
     speedScale = 1;
     setupGround();
@@ -75,14 +77,16 @@ function handleStart() {
     window.requestAnimationFrame(update);
 }
 
+// Essa funcao coloca no estado de derrota, esperando para ser reiniciado
 function handleLose() {
     setDinoLose();
     setTimeout(() => {
-        document.addEventListener("keydown", handleStart, {once: true})
+        document.addEventListener("keydown", handleStart, { once: true })
         startScreenElem.classList.remove("hide");
     }, 100);
 }
 
+// Essa funcao arruma a posicao da janela
 function setPixelToWorldScale() {
     let worldToPixelScale;
     // innerWidht => Retorna a largura da area da janela
